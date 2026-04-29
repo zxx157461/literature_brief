@@ -79,6 +79,9 @@ class App:
 
                 self.main_win.after(0, lambda: self.main_win.set_status(status_msg, progress=1.0))
                 self.main_win.after(0, lambda: self.main_win.show_results(papers))
+                # 搜索完成后自动跳转到审核页
+                if papers:
+                    self.main_win.after(100, lambda: self._auto_select_and_review(papers))
                 self.main_win.after(0, lambda: self.main_win.set_searching(False))
             except Exception as e:
                 import traceback

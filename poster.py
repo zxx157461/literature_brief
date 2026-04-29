@@ -544,6 +544,11 @@ Requirements:
                 b64 = base64.b64encode(f.read()).decode("utf-8")
             payload["image_url"] = f"data:image/png;base64,{b64}"
 
+        # 调试输出：打印完整请求信息
+        print(f"[海报图片] 请求 URL: {url}")
+        print(f"[海报图片] 请求模型: {model}")
+        print(f"[海报图片] 请求大小: {payload['size']}")
+
         req = urllib.request.Request(
             url,
             data=json.dumps(payload).encode("utf-8"),
@@ -556,12 +561,15 @@ Requirements:
                 result = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             err_body = e.read().decode("utf-8", errors="replace") if e.fp else ""
+            print(f"[海报图片] HTTP 错误响应: {err_body[:500]}")
             raise Exception(f"HTTP {e.code}: {err_body[:500]}")
 
         if "error" in result:
+            print(f"[海报图片] API 错误: {result['error']}")
             raise Exception(f"API error: {result['error']}")
 
         img_url = result["data"][0]["url"]
+        print(f"[海报图片] 图片 URL 获取成功")
         img_req = urllib.request.Request(img_url, headers={"User-Agent": "literature-brief/1.0"})
         with urllib.request.urlopen(img_req, timeout=IMAGE_DOWNLOAD_TIMEOUT, context=SSL_CTX) as resp:
             return resp.read()
