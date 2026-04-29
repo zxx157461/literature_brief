@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.spec
+
+# Virtualenv
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# 配置文件（含敏感信息）
+config.json
+
+# 用户数据
+data/
+
+# 打包产物
+*.exe
+_internal/
+
+# OS
+.DS_Store
+Thumbs.db
